@@ -1,0 +1,76 @@
+package homework3;
+
+public class Account {
+	// 数据域
+	private int id = 0;
+	private double balance = 0;
+	private static double annualInterestRate = 0;  // 每个账户的年利率都相同，设置为静态
+	private java.util.Date dateCreated;
+	
+	// 无参构造方法
+	public Account() {
+		dateCreated = new java.util.Date();
+	}
+	
+	// 构造方法重载
+	public Account(int id, double balance) {
+		this.id = id;
+		this.balance = balance;
+		dateCreated = new java.util.Date();
+	}
+	
+	// id访问器
+	public int getId() {
+		return this.id;
+	}
+	
+	// id修改器
+	public void setId(int id) {
+		this.id = id; 
+	}
+	
+	// 余额访问器
+	public double getBalance() {
+		return this.balance;
+	}
+	
+	// 余额修改器
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	
+	// 年利率访问器
+	public static double getAnnualInterestRate() {
+		return Account.annualInterestRate;
+	}
+	
+	// 年利率修改器
+	public static void setAnnualInterestRate(double annualInterestRate) {
+		Account.annualInterestRate = annualInterestRate;
+	}
+	
+	// 创户日期访问器
+	public java.util.Date getDataCreated(){
+		return this.dateCreated;
+	}
+	
+	// 月利率访问器
+	public static double getMonthlyInterestRate() {
+		return Account.annualInterestRate / 12;
+	}
+	
+	// 计算月利息
+	public double getMonthlyInterest() {
+		return this.balance * getMonthlyInterestRate();
+	}
+	
+	// 提取额度
+	public void withDraw(double amount) {
+		this.balance -= amount;
+	}
+	
+	// 存储额度
+	public void deposit(double amount) {
+		this.balance += amount;
+	}
+}
