@@ -1,0 +1,70 @@
+package homework3;
+
+// 创建Course类，继承Cloneable接口
+public class Course implements Cloneable{
+	// 私有数据域
+	private String courseName;
+	private String[] students = new String[100];
+	private int numberOfStudents;
+	
+	// 构造方法
+	public Course(String courseName) {
+		this.courseName = courseName;
+	}
+	
+	// 加入学生
+	public void addStudent(String student) {
+		students[numberOfStudents] = student;
+		numberOfStudents++;
+	}
+	
+	// 访问学生名单
+	public String[] getStudents() {
+		return students;
+	}
+	
+	// 访问学生数
+	public int getNumberOfStudents() {
+		return numberOfStudents;
+	}
+	
+	// 访问课程名
+	public String getCourseName() {
+		return courseName;
+	}
+	
+	// 删除学生
+	public void dropStudent(String student) {
+		// 寻找目标学生
+		for(int i = 0; i < numberOfStudents; i++) {
+			if(students[i] == student) {
+				// 将其后的学生前移
+				for(int j = i + 1; j < numberOfStudents; i++, j++) {
+					students[i] = students[j];
+				}
+				// 一旦删除目标跳出循环
+				break;
+			}
+		}
+		// 学生数减一
+		numberOfStudents--;
+	}
+	
+	// 复制方法，返回对象
+	public Object clone() {
+		try {
+			// 调用父类中的clone方法进行复制，并转换为Course类型
+			Course c = (Course)super.clone();
+			// 对数据与进行复制
+			c.students = new String[100];
+			// 引用类型变量进行深层复制
+			System.arraycopy(students, 0, c.students, 0, 100);
+			c.numberOfStudents = numberOfStudents;
+			return c;
+		}
+		// 若不支持clone方法，返回null
+		catch(CloneNotSupportedException ex) {
+			return null;
+		}
+	}
+}
