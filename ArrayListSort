@@ -1,0 +1,49 @@
+package homework3;
+import java.util.ArrayList;
+
+public class ArrayListSort {
+
+	public static void main(String[] args) {
+		// 创建ArrayList对象
+		ArrayList<Number> list = new ArrayList<>();
+		list.add(9);
+		list.add(2);
+		list.add(34);
+		list.add(28);
+		list.add(1);
+		list.add(74);
+		list.add(45);
+		displayArraylist(list);
+		// 调用排序方法
+		sort(list);
+		displayArraylist(list);
+	}
+	
+	// ArrayList从小到大排序方法
+	public static void sort(ArrayList<Number> list) {
+		// 对每一个数，遍历其后面的数，找到最小值
+		for(int i = 0; i < list.size() - 1; i++) {
+			Number min = list.get(i);
+			int minIndex = i;
+			for(int j = i + 1; j < list.size(); j++) {
+				if(list.get(j).doubleValue() < min.doubleValue()) {
+					min = list.get(j);
+					minIndex = j;
+				}
+			}
+			// 将最小值与该位置数交换
+			if(i != minIndex) {
+				list.set(minIndex, list.get(i));
+				list.set(i, min);
+			}
+		}
+	}
+	
+	// 显示ArrayList
+	public static void displayArraylist(ArrayList<Number> list) {
+		for(int i = 0; i < list.size(); i++) {
+			System.out.print(list.get(i).doubleValue() + " ");
+		}
+		System.out.print("\n");
+	}
+}
