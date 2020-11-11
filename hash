@@ -1,0 +1,77 @@
+package homework4;
+
+import java.io.*;
+import java.security.*;
+
+public class hash {
+	// 主方法，计算文件夹目录下文件的哈希值
+	public static void main(String[] args) {
+		try {
+			dfs("C:\\Users\\WBZ\\Desktop\\a");  // 输入文件夹路径
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 计算文件hash值
+	public static byte[] SHA1Checksum(InputStream is) throws Exception {
+		// 用于计算hash值的文件缓冲区
+		byte[] buffer = new byte[1024];
+		// 使用SHA1哈希/摘要算法
+		MessageDigest complete = MessageDigest.getInstance("SHA-1");
+		int numRead = 0;
+		do {
+			// 读出numRead字节到buffer中
+			numRead = is.read(buffer);
+			if(numRead > 0) {
+				// 根据buffer[0:numRead]的内容更新hash值
+				complete.update(buffer, 0, numRead);
+			}
+			// 文件已读完，退出循环
+		} while (numRead != -1);
+		// 关闭输入流
+		is.close();
+		// 返回SHA1哈希值
+		return complete.digest();
+	}
+	
+	public static void printHashValue(String path) {
+		try {
+			// 建立文件对象
+			File file = new File(path);
+			// 为文件建立输入流
+			FileInputStream is = new FileInputStream(file);
+			// 将计算得到的文件哈希值（字节）传入数组中
+			byte[] sha1 = SHA1Checksum(is);
+			
+			String result = "";
+			for(int i = 0; i < sha1.length; i++) {
+				// 将得到的整型字节哈希值计算补码，并转换为16进制
+				result += Integer.toString(sha1[i] & 0xFF, 16);
+			}
+			
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 深度优先遍历文件夹，输出文件哈希值
+	public static void dfs(String path) {
+		File dir = new File(path);
+		// 获得指定路径下所有的文件名和文件夹名，传入数组
+		File[] fs = dir.listFiles();
+		for(int i = 0; i < fs.length; i++) {
+			// 若为文件，输出文件名和哈希值
+			if(fs[i].isFile()) {
+				System.out.print("file" + " " +  fs[i].getName() + " ");
+				printHashValue(path + File.separator + fs[i].getName());
+			}
+			// 若为文件夹，则利用递归方法继续遍历该文件夹路径下的文件和文件夹，直到遍历完成
+			if(fs[i].isDirectory()) {
+				System.out.println("directory" + " " + fs[i].getName());
+				dfs(path + File.separator + fs[i].getName());
+			}
+		}
+	}
+}
